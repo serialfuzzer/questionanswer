@@ -32,7 +32,7 @@
         .questionList ul {
             margin-top: 50px;
             margin-bottom: 50px;
-
+            
             list-style-type: none;
         }
         .questionList li {
@@ -47,6 +47,10 @@
         
         tinymce.init({
             selector: '#mytextarea',
+            plugins: 'a11ychecker advcode casechange export formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
+            toolbar: 'a11ycheck addcomment showcomments casechange checklist code export formatpainter pageembed permanentpen table',
+            toolbar_mode: 'floating',
+            tinycomments_mode: 'embedded',
             height : "600",
             setup: function (editor) {
                 editor.on('init', function (e) {
@@ -55,9 +59,9 @@
             }
         });
     </script>
-     <script>
+    <script>
         var API_URL = window.location.host;
-     </script>
+    </script>
     <title>Question and Answer</title>
 </head>
 <body class="bg-light text-dark">
@@ -127,7 +131,7 @@
                 }
             })
         }
-
+        
         (function getAndPopulateQuestionsInDom(){
             $.ajax({
                 url: `http://${API_URL}/api/question/getByPostId`,
