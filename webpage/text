@@ -1,0 +1,59 @@
+Let's get started on your first Network Assessment. One of the
+first stages of Ethical Hacking is information gathering which
+is also known as reconnaissance. It is a significant part of an attack
+or an assessment.
+
+--- Nmap
+
+Nmap, also known as Network Mapper, is a tool used by security
+professionals to scan a network to identify live hosts, open ports and
+services. It also comes with additional features that allow
+the attacker to find further information about the specified 
+hosts and services, also known as enumeration. It is available
+on different operating systems, including LInux, Windows and macOS.
+
+-- Getting Started with Nmap
+
+Let's go ahead and start with our first step by downloading and installing
+Nmap. For this example, we are going to be performing theinstallation and 
+scanning from a Linux machine. Click here to download the files for your
+device. However, you can also use the following command on the terminal to
+download Nmap on Linux machines.
+
+--
+ apt-get install nmap # screenshot of command and output
+--
+
+
+-- HOW NMAP Works
+
+Nmap sends packets and analyses the responses from hosts. So what is a host?
+A host is any device tha tis connected to a computer network. For example, computers, phones and tablets are all hosts on a network. From the responses it receives, it analyses them from different services and further
+processes them check for vulnerable versions and open ports. Another essential topic to understand how NMAP sends and recieves packets is the "30way handshake" Watch this short video below to understand better how 
+Nmap utilises the handshake protocol to scan networks.
+
+
+---- video goes here
+
+
+First Nmap Scan
+
+Let's get our first Nmap scan done. The basic syntax to use Nmap is shown below:
+
+nmap [IP/URL]
+
+While it may not be illegal to port scan any URL or IP address on the internet, it may cause disturbance to the service, which can cause legal issues. Therefore, make sure to have permission before you scan any 
+device. We are going to be using the following URL, which permits scanning.
+
+URL - scanme.nmap.org
+
+Using the syntax provided above, perform your first scan on the above URL. Your results should look like the following picutre.
+
+-- scan result screenshot
+
+-- Question and answers
+
+Q1) What is the IP address that has been blurred in the above scan result?
+A - Advanced Nmap scan
+
+TBC

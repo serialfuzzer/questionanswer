@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"  />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">  
+    <style>
+        *{
+            font-family: 'Roboto';
+        }
+        h2 {
+            padding-top: 50px;
+        }
+        img {
+            padding-top: 50px;
+        }
+        .command {
+            padding-bottom: 20px;
+            padding-top: 20px;
+            font-weight: bold;
+        }
+        .spacing {
+            padding-top:30px;
+            padding-bottom: 30px;
+        }
+        
+        
+        
+    </style>
+    <!-- Accordian Styles-->
+    <style>
+        /* accordion styles */
+        .accordion .card-header {
+            cursor: pointer;
+            position: relative;
+        }
+        .accordion.indicator-plus .card-header:after {
+            font-family: "FontAwesome";
+            content: "";
+            position: absolute;
+            right: 1rem;
+            top: 0.5rem;
+        }
+        .accordion.indicator-plus .card-header.collapsed:after {
+            content: "";
+        }
+        .accordion.indicator-plus-before.round-indicator .card-header:before {
+            font-family: "FontAwesome";
+            font-size: 14pt;
+            content: "";
+            position: absolute;
+            right: 1rem;
+            top: 0.5rem;
+            color: #06c;
+        }
+        .accordion.indicator-plus-before.round-indicator .card-header.collapsed:before {
+            content: "";
+            color: #06c;
+        }
+        .accordion.indicator-plus-before .card-header:before {
+            font-family: "FontAwesome";
+            content: "";
+            position: absolute;
+            right: 1rem;
+            top: 0.5rem;
+        }
+        .accordion.indicator-plus-before .card-header.collapsed:before {
+            content: "";
+        }
+        .accordion.indicator-chevron .card-header:after {
+            font-family: "FontAwesome";
+            content: "";
+            position: absolute;
+            right: 1rem;
+            top: 0.5rem;
+        }
+        .accordion.indicator-chevron .card-header.collapsed:after {
+            content: "";
+        }
+        .accordion.background-none [class^=card] {
+            background: transparent;
+        }
+        .accordion.border-0 .card {
+            border: 0;
+        }
+        
+        .card-body {
+            padding-left: 3.1rem;
+        }
+        
+        .card:last-of-type {
+            border-bottom: 1px solid #ddd !important;
+        }
+        
+        code {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #c06;
+        }
+        
+    </style>
+    <script>
+       var API_URL = window.location.host;
+    </script>
+    <title>Nmap</title>
+</head>
+<body class="bg-light text-dark">
+    <nav class="navbar navbar-expand navbar-light bg-light">
+        <a class="navbar-brand" href="#">QuestionAndAnswer</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <button class="btn btn-success editPost" onclick='redirectToEditPage()' href="#">Edit this post</a>
+                    </li>
+                </ul>
+                <!--
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                -->
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="container">
+                <div class="row py-5">
+                    
+                    <h2 class="text-dark darkHighlighted title col-12"> <!-- Heading -->
+                        
+                    </h2>
+                    
+                    <div class="contentOfTheBlog col-12 py-5">
+                        
+                    </div>
+                    
+                    <div class="question col-12">
+                        <h3>Questions:</h3>
+                        
+                        
+                        <div class="accordion indicator-plus-before round-indicator" id="accordionH" aria-multiselectable="true">
+                            <div class="card m-b-0 questionsGroup">
+                                
+                                
+                                
+                            </div>
+                        </div>	
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var postId = window.location.hash.substr(1).split("=")[1];
+            
+            function checkAnswer(inputText, realAnswer) {
+                if (inputText.toLowerCase() == realAnswer.toLowerCase()) {
+                    
+                }
+            }
+            
+            (function getAndPopulateQuestionsInDom(){
+                $.ajax({
+                    url: `http://${API_URL}/api/question/getByPostId`,
+                    method: "POST", 
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        "postId": postId
+                    }),
+                    success: function( response ) {
+                        var numberOfQuestions = response.length;
+                        var ids = [];
+                        for(var i=0; i<numberOfQuestions; i++){
+                            var qn = response[i];
+                            var template = `<div class="question">
+                                <div class="card-header collapsed" role="tab" id="headingTwoH${i}" href="#collapseTwoH${i}" data-toggle="collapse" data-parent="#accordionH" aria-expanded="false" aria-controls="collapseTwoH${i}">
+                                    <a class="card-title">${qn.question}</a>
+                                </div>
+                                <div class="collapse" id="collapseTwoH${i}" role="tabpanel" aria-labelledby="headingTwoH${i}">
+                                    <div class="card-body">
+                                        <input type="text" class="Answer${qn._id}" /> <br/>
+                                        <button class="btn btn-success mt-3 Check${qn._id}" >Check Answer</button>
+                                        <div class="status mt-3">
+                                            <span class="correctAnswer text-success Correct${qn._id}"> <strong> Correct Answer </strong></span>
+                                            <span class="wrongAnswer text-danger Incorrect${qn._id}"> <strong> Wrong Answer </strong></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                            $(".questionsGroup").append(template);
+                            var correctClass = `.Correct${qn._id}`;
+                            var incorrectClass = `.Incorrect${qn._id}`;
+                            $(correctClass).hide();
+                            $(incorrectClass).hide();
+                            document.querySelector(`.Check${qn._id}`).addEventListener('click',                             (function(currentQuestion){
+                                return function (event) {
+                                    var qnId = event.target.classList[event.target.classList.length-1].split("Check")[1];
+                                    var attemptedAnswer = document.querySelector(`.Answer${qnId}`).value;
+                                    $.ajax({
+                                        url: `http://${API_URL}/api/question/checkAnswer`,
+                                        method:"POST",
+                                        contentType: "application/json",
+                                        data: JSON.stringify({
+                                            "questionId": qnId,
+                                            "answer": attemptedAnswer
+                                        }),
+                                        success: function(result){
+                                            var status = result.status;
+                                            var questionId = result.questionId;
+                                            var correctClass = `.Correct${questionId}`;
+                                            var incorrectClass = `.Incorrect${questionId}`;
+                                            if(status=="correct"){
+                                                $(correctClass).show();
+                                                console.log(correctClass)
+                                                $(incorrectClass).hide();
+                                            }else{
+                                                $(correctClass).hide();
+                                                $(incorrectClass).show();
+                                            }
+                                        }
+                                    })
+                                }
+                            })(qn));
+                            
+                            
+                        }
+                        
+                        console.log(response);
+                    }
+                })
+            })();
+            
+            function redirectToEditPage(){
+                window.location.href= `/edit.html#id=${window.location.hash.substr(1).split("=")[1]}`;
+            }
+            $(document).ready(function() {
+                
+                
+                
+                (function(){ // get and put the content in the DOM
+                    
+                    console.log(postId);
+                    if(postId.length>10){
+                        $.ajax({
+                            url: `http://${API_URL}/api/posts/getPostById`,
+                            method:"POST",
+                            contentType: "application/json",
+                            data: JSON.stringify({
+                                "postId": postId
+                            }),
+                            success: function(result){
+                                var post = result[0];
+                                $(".title").append(post.title);
+                                $(".contentOfTheBlog").append(post.content);
+                                console.log(post);
+                            }
+                        })
+                    }else{
+                        alert("Post not found");
+                    }
+                    // view the post
+                })()
+            });
+            
+            
+            /* Accordian Start */
+            $( '.closeall' ).click( function( e ) {
+                e.preventDefault();
+                $( '.accordion .collapse.show' ).collapse( 'hide' );
+                return false;
+            } );
+            $( '.openall' ).click( function( e ) {
+                e.preventDefault();
+                $( '.accordion .collapse' ).collapse( 'show' );
+                return false;
+            } );
+            
+            if ( window.location.hash ) {
+                redirect( window.location.hash );
+            }
+            
+            $( 'a[href^="#"]' ).on( 'click', function( e ) {
+                e.preventDefault();
+                var a = document.createElement( 'a' );
+                a.href = this.href;
+                redirect ( a.hash );
+                return false;
+            } );
+            
+            function redirect( hash ) {
+                // $( hash ).attr( 'aria-expanded', 'true' ).focus();
+                // $( hash + '+div.collapse' ).addClass( 'show' ).attr( 'aria-expanded', 'true' );
+                $( hash + '+div.collapse' ).collapse( 'show' );
+                
+                // using this because of static nav bar space
+                $( 'html, body' ).animate( {
+                    scrollTop: $( hash ).offset().top - 60
+                }, 10, function() {
+                    // Add hash (#) to URL when done scrolling (default click behavior)
+                    window.location.hash = hash;
+                } );
+            }
+            
+            document.documentElement.setAttribute("lang", "en");
+            document.documentElement.removeAttribute("class");
+            
+            axe.run( function(err, results) {
+                console.log( results.violations );
+            } );
+            
+        </script>
+    </body>
+    </html>

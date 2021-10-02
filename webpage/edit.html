@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <script src="https://cdn.tiny.cloud/1/jumh9h7ecsfygg6u0pfd32khurpzfohv7lp41132a155t2uy/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>  
+    <style>
+        *{
+            font-family: 'Roboto';
+        }
+        h2 {
+            padding-top: 50px;
+        }
+        img {
+            padding-top: 50px;
+        }
+        .command {
+            padding-bottom: 20px;
+            padding-top: 20px;
+            font-weight: bold;
+        }
+        .spacing {
+            padding-top:30px;
+            padding-bottom: 30px;
+        }
+        .questionList ul {
+            margin-top: 50px;
+            margin-bottom: 50px;
+
+            list-style-type: none;
+        }
+        .questionList li {
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 7px;
+            margin-bottom: 4px;
+        }
+        
+    </style>
+    <script>
+        
+        tinymce.init({
+            selector: '#mytextarea',
+            height : "600",
+            setup: function (editor) {
+                editor.on('init', function (e) {
+                    updateData();
+                });
+            }
+        });
+    </script>
+     <script>
+        var API_URL = window.location.host;
+     </script>
+    <title>Nmap</title>
+</head>
+<body class="bg-light text-dark">
+    <nav class="navbar navbar-expand navbar-light bg-light">
+        <a class="navbar-brand" href="#">QuestionAndAnswer</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <!--
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            -->
+        </div>
+    </nav>
+    
+    <div class="container py-5">
+        <h1>Edit the post</h1>
+        <h3 class="pt-5"> Title </h3>  <input type="text" class="form-control title py-3" value="" placeholder="Enter Title">
+        <h3 class="pt-5"> Image URL </h3>  <input type="text" class="form-control imageURL py-3" value="" placeholder="Enter Image URl">
+        <form method="post" rows="100" class="py-3">
+            <textarea id="mytextarea" name="mytextarea" class="content">
+                
+            </textarea>   
+        </form>
+        <button class="btn btn-primary" onclick="edit();">Submit</button>
+        
+        <!-- List Question -->
+        <div class="questionList col-12">
+            <ul class='questionListUL'>
+            </ul>
+        </div>
+        <!-- Add Question -->
+        <div class="addQuestion mt-3">
+            <h3 class="pt-5"> Question </h3>  <input type="text" class="form-control py-3 questionInputBox" value="" placeholder="Enter Question">
+            <h3 class="pt-5"> Answer </h3>  <input type="text" class="form-control py-3 answerInputBox" value="" placeholder="Enter Answer">
+            <button class="btn btn-success addQuestion mt-3" onclick="addQuestion() ">Add a question [+]</button>
+        </div>
+    </div>
+    
+    <script>
+        var postId = window.location.hash.substr(1).split("=")[1];
+        
+        function addQuestion(){
+            var question = $(".questionInputBox").val();
+            var answer = $(".answerInputBox").val();
+            $.ajax({
+                url: `http://${API_URL}/api/question/add`,
+                method: "POST", 
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "postId": postId,
+                    "question": question,
+                    "answer": answer
+                }),
+                success: function( response ) {
+                    $(".questionListUL").append(`<li> ${question} : ${answer}  </li>`);
+                    console.log(response);
+                }
+            })
+        }
+
+        (function getAndPopulateQuestionsInDom(){
+            $.ajax({
+                url: `http://${API_URL}/api/question/getByPostId`,
+                method: "POST", 
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "postId": postId
+                }),
+                success: function( response ) {
+                    var numberOfQuestions = response.length;
+                    for(var i=0; i<numberOfQuestions; i++){
+                        var question = response[i];
+                        $(".questionListUL").append(`<li> ${question.question} : ${question.answer}  </li>`);
+                    }
+                    
+                    console.log(response);
+                }
+            })
+        })();
+        
+        function updateTinyMce(content) {
+            console.log(content)
+            tinymce.get("mytextarea").setContent(content);
+        }
+        
+        function edit(){
+            $.ajax({
+                url: `http://${API_URL}/api/posts/editPost`,
+                method:"POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "postId": postId,
+                    "content": tinymce.get("mytextarea").getContent(),
+                    "title": $(".title").val(),
+                    "imageUrl": $(".imageURL").val()
+                }),
+                success: function( response ) {
+                    console.log(response);
+                }
+            });
+        }
+        $(document).ready(function() {
+            window.updateData = function(){ // 
+                
+                if(postId.length>10){
+                    $.ajax({
+                        url: `http://${API_URL}/api/posts/getPostById`,
+                        method:"POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            "postId": postId
+                        }),
+                        success: function(result){
+                            window.currentPost = result[0];
+                            var post = result[0];
+                            $(".title").val(post.title);
+                            $(".imageURL").val(post.imageUrl);
+                            updateTinyMce(post.content);
+                            tinymce.on('addeditor', function( event ) {
+                                var editor = event.editor;
+                                var $textarea = $('#' + editor.id);
+                                console.log($textarea.val());
+                            }, true );
+                            
+                        }
+                    })
+                }else{
+                    alert("Post not found");
+                }
+                // view the post
+            }
+        });
+    </script>
+    
+    
+</body>
+</html>
+
+<!--
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row py-5">
+                <h2 class="text-dark darkHighlighted"> 
+                    What is Nmap?
+                </h2>
+                <div class="content">
+                    Let's get started on your first Network Assessment. One of the
+                    first stages of Ethical Hacking is information gathering which
+                    is also known as reconnaissance. It is a significant part of an attack
+                    or an assessment.
+                    
+                    Nmap, also known as Network Mapper, is a tool used by security
+                    professionals to scan a network to identify live hosts, open ports and
+                    services. It also comes with additional features that allow
+                    the attacker to find further information about the specified 
+                    hosts and services, also known as enumeration. It is available
+                    on different operating systems, including LInux, Windows and macOS.
+                    
+                    <h2 class="text-dark darkHighlighted"> 
+                        Getting Started with Nmap
+                    </h2>
+                    
+                    Let's go ahead and start with our first step by downloading and installing
+                    Nmap. For this example, we are going to be performing theinstallation and 
+                    scanning from a Linux machine. Click here to download the files for your
+                    device. However, you can also use the following command on the terminal to
+                    download Nmap on Linux machines.
+                    
+                    <img src="static/images/InstallingNmap.PNG" alt="">
+                    
+                    
+                    
+                    <h2 class="text-dark darkHighlighted"> 
+                        How Nmap Works?
+                    </h2>
+                    
+                    
+                    Nmap sends packets and analyses the responses from hosts. So what is a host?
+                    A host is any device tha tis connected to a computer network. For example, computers, phones and tablets are all hosts on a network. From the responses it receives, it analyses them from different services and further
+                    processes them check for vulnerable versions and open ports. Another essential topic to understand how NMAP sends and recieves packets is the "30way handshake" Watch this short video below to understand better how 
+                    Nmap utilises the handshake protocol to scan networks.
+                    
+                    <div class="video">
+                        <h2></h2>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/LyDqA-dAPW4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <h2></h2>
+                    </div>
+                    
+                    
+                    <h2>First Nmap Scan </h2>
+                    
+                    Let's get our first Nmap scan done. The basic syntax to use Nmap is shown below:
+                    
+                    <br /> 
+                    
+                    <div class="command">
+                        $ nmap [IP/URL] 
+                    </div>
+                    
+                    While it may not be illegal to port scan any URL or IP address on the internet, it may cause disturbance to the service, which can cause legal issues. Therefore, make sure to have permission before you scan any 
+                    device. We are going to be using the following URL, which permits scanning.
+                    
+                    <div class="command">
+                        URL - <b> scanme.nmap.org </b>
+                    </div>
+                    
+                    Using the syntax provided above, perform your first scan on the above URL. Your results should look like the following picutre.
+                    
+                    <img src="/static/images/Nmap Scan Result.PNG" alt="">
+                    
+                    
+                    <div class="questions">
+                        <h3 class="spacing">Question and answers </h3>
+                        <div class="question">
+                            Q1) What is the IP address that has been blurred in the above scan result?
+                            
+                        </div>
+                        <div class="answer">
+                            <form>
+                                <div class="form-group py-3">
+                                    <label for="exampleInputEmail1">Enter your answer</label>
+                                    <input type="email" class="form-control" placeholder="Enter answer">
+                                </div>
+                                <div class="form-group py-1">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+-->
