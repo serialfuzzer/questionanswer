@@ -15,6 +15,21 @@ exports.addQuestion = async function (req, res, next) {
 
 
 exports.removeQuestion = async function (req, res, next) {
+    const { questionId } = req.body;
+    try {
+        const question = await Questions.find({ _id: questionId });
+        if (Object.keys(question).length > 0) {
+            const deletedQuestion = await Questions.deleteOne({ _id: questionId });
+            const deletedQuestionUpdated = await Questions.find({});
+            res.send(deletedQuestionUpdated);
+        } else {
+            res.status(403).json({
+                "message": "Question  not found"
+            })
+        }
+    } catch (err) {
+        throw new Error(err);
+    }
     
 }
 
@@ -25,7 +40,7 @@ exports.getAllQuestionsByPostId = async function (req, res, next) {
 }
 
 exports.getAQuestion = async function (req, res, next) {
-
+    
 }
 
 exports.checkAnswer = async function (req, res, next) {

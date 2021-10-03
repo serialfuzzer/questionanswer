@@ -113,6 +113,22 @@
     <script>
         var postId = window.location.hash.substr(1).split("=")[1];
         
+        function removeQuestion(questionId){
+            $.ajax({
+                url: `http://${API_URL}/api/question/removeQuestionByQuestionId`,
+                method: "POST", 
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "questionId": questionId
+                }),
+                success: function(response){
+                    console.log(`question with id: ${questionId} has been removed`)
+                    $(`.${questionId}`).remove();
+                    $(`.${questionId}Btn`).remove();
+                }
+            })
+        }
+
         function addQuestion(){
             var question = $(".questionInputBox").val();
             var answer = $(".answerInputBox").val();
@@ -126,7 +142,9 @@
                     "answer": answer
                 }),
                 success: function( response ) {
-                    $(".questionListUL").append(`<li> ${question} : ${answer}  </li>`);
+                    var currentQuestion = response[ response.length - 1 ];
+                    var currentQuestionId = currentQuestion._id;
+                    $(".questionListUL").append(` <li class="${currentQuestionId}"> ${question} : ${answer}  </li> <span class="${currentQuestionId}"> <button class="btn btn-success" onclick="removeQuestion('${currentQuestionId}')"> Remove question </button> </span> `);
                     console.log(response);
                 }
             })
@@ -144,7 +162,8 @@
                     var numberOfQuestions = response.length;
                     for(var i=0; i<numberOfQuestions; i++){
                         var question = response[i];
-                        $(".questionListUL").append(`<li> ${question.question} : ${question.answer}  </li>`);
+                        var currentQuestionId = question._id;
+                        $(".questionListUL").append(`<li class="${currentQuestionId}"> ${question.question} : ${question.answer}  </li> <span class="${currentQuestionId}"> <button class="btn btn-success" onclick="removeQuestion('${currentQuestionId}')"> Remove question </button> </span>`);
                     }
                     
                     console.log(response);
