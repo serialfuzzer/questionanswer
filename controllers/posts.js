@@ -25,8 +25,11 @@ exports.removePost = async function (req, res, next) {
     try {
         const post = await Posts.find({ _id: postId });
         if (Object.keys(post).length > 0) {
-            const deletedPost = await Posts.deleteOne({ _id: postId });
-            res.send(deletedPost);
+            //const deletedPost = await Posts.deleteOne({ _id: postId });
+            
+            res.json({
+                "status": "This feature has been disabled by the administrator."
+            });
             
         } else {
             res.status(403).json({
